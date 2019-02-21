@@ -21,6 +21,7 @@ RUN apk -U upgrade \
     pcre-dev \
     libtool \
     samba-dev \
+    php-imagick \
  && apk add \
     libressl \
     ca-certificates \

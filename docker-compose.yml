@@ -6,7 +6,7 @@ version: '3'
 
 services:
   nextcloud:
-    image: wonderfall/nextcloud
+    image: iwilltry42/nextcloud
     build:
       context: .
       dockerfile: Dockerfile.15.0

@@ -5,8 +5,6 @@
 Thanks to [@wonderfall](https://github.com/wonderfall) who created the original project [wonderfall/docker-nextcloud](https://github.com/wonderfall/nextcloud).
 I'm using the same `Dockerfile`, so you can choose to pull either from [wonderfall/nextcloud](https://hub.docker.com/r/wonderfall/nextcloud) or from [iwilltry42/nextcloud](https://hub.docker.com/r/iwilltry42/nextcloud).
 
-**This image was made for my own use and I have no intention to make this official. Support won't be regular so if there's an update, or a fix, you can open a pull request. Any contribution is welcome, but please be aware I'm very busy currently. Before opening an issue, please check if there's already one related. Also please use Github instead of Docker Hub, otherwise I won't see your comments. Thanks.**
-
 ## Features
 
 - Based on Alpine Linux.
@@ -64,29 +62,30 @@ Don't forget to use a **strong password** for the admin account!
 
 ## Database
 
-Basically, you can use a database instance running on the host or any other machine. An easier solution is to use an external database container. I suggest you to use MariaDB, which is a reliable database server. You can use the official `mariadb` image available on Docker Hub to create a database container, which must be linked to the Nextcloud container. PostgreSQL can also be used as well.
+Basically, you can use a database instance running on the host or any other machine. An easier solution is to use an external database container. I suggest you to use Postgres, which is a reliable database server. You can use the official `postgres` image available on Docker Hub to create a database container, which must be linked to the Nextcloud container. MariaDB can also be used as well.
 
 ## Setup
 
-Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` values (mariadb). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
+Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `POSTGRES_PASSWORD` values (postgres). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
 
 ```shell
-docker pull iwilltry42/nextcloud:16 && docker pull mariadb:10
+docker pull iwilltry42/nextcloud:16 && docker pull postgres:11
 
-docker run -d --name db_nextcloud \
-       -v /docker/nextcloud/db:/var/lib/mysql \
-       -e MYSQL_ROOT_PASSWORD=supersecretpassword \
-       -e MYSQL_DATABASE=nextcloud -e MYSQL_USER=nextcloud \
-       -e MYSQL_PASSWORD=supersecretpassword \
-       mariadb:10
+docker run -d --name nextcloud_postgres \
+       -v /docker/nextcloud/db:/var/lib/postgresql/data \
+       -e POSTGRES_DB=nextcloud \
+       -e POSTGRES_USERNAME=nextcloud \
+       -e POSTGRES_PASSWORD=supersecretpassword \
+       postgres:11
 
 docker run -d --name nextcloud \
-       --link db_nextcloud:db_nextcloud \
+       --link nextcloud_postgres:db \
        -v /docker/nextcloud/data:/data \
        -v /docker/nextcloud/config:/config \
        -v /docker/nextcloud/apps:/apps2 \
        -v /docker/nextcloud/themes:/nextcloud/themes \
-       -e UID=1000 -e GID=1000 \
+       -e UID=1000 \
+       -e GID=1000 \
        -e UPLOAD_MAX_SIZE=10G \
        -e APC_SHM_SIZE=128M \
        -e OPCACHE_MEM_SIZE=128 \
@@ -123,7 +122,8 @@ Pull a newer image, then recreate the container as you did before (*Setup* step)
 
 ## docker-compose
 
-I advise you to use [docker-compose](https://docs.docker.com/compose/), which is a great tool for managing containers. You can create a `docker-compose.yml` with the following content (which must be adapted to your needs) and then run `docker-compose up -d nextcloud-db`, wait some 15 seconds for the database to come up, then run everything with `docker-compose up -d`, that's it! On subsequent runs,  a single `docker-compose up -d` is sufficient!
+I advise you to use [docker-compose](https://docs.docker.com/compose/), which is a great tool for managing containers. You can create a `docker-compose.yml` with the following content (which must be adapted to your needs) and then run `docker-compose up -d nextcloud_postgres`, wait some 15 seconds for the database to come up, then run everything with `docker-compose up -d`, that's it!
+On subsequent runs, a single `docker-compose up -d` is sufficient!
 
 ### docker-compose file
 

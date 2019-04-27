@@ -73,7 +73,7 @@ Basically, you can use a database instance running on the host or any other mach
 Pull the image and create a container. `/docker` can be anywhere on your host, this is just an example. Change `MYSQL_ROOT_PASSWORD` and `MYSQL_PASSWORD` values (mariadb). You may also want to change UID and GID for Nextcloud, as well as other variables (see *Environment Variables*).
 
 ```shell
-docker pull iwilltry42/nextcloud:15 && docker pull mariadb:10
+docker pull iwilltry42/nextcloud:16 && docker pull mariadb:10
 
 docker run -d --name db_nextcloud \
        -v /docker/nextcloud/db:/var/lib/mysql \
@@ -102,7 +102,7 @@ docker run -d --name nextcloud \
        -e DB_USER=nextcloud \
        -e DB_PASSWORD=supersecretpassword \
        -e DB_HOST=db_nextcloud \
-       iwilltry42/nextcloud:15
+       iwilltry42/nextcloud:16
 ```
 
 You are **not obliged** to use `ADMIN_USER` and `ADMIN_PASSWORD`. If these variables are not provided, you'll be able to configure your admin acccount from your browser.
@@ -129,82 +129,8 @@ I advise you to use [docker-compose](https://docs.docker.com/compose/), which is
 
 ### docker-compose file
 
+You can grab a [docker-compose.yml from here](./docker-compose.yml) which boots up Nextcloud, Redis and PostgreSQL.
 Don't copy/paste without thinking! It is a model so you can see how to do it correctly.
-
-```yaml
-version: '3'
-
-networks:
-  nextcloud_network:
-    external: false
-
-services:
-  nextcloud:
-    image: iwilltry42/nextcloud
-    depends_on:
-      - nextcloud-db           # If using MySQL
-      - solr                   # If using Nextant
-      - redis                  # If using Redis
-    environment:
-      - UID=1000
-      - GID=1000
-      - UPLOAD_MAX_SIZE=10G
-      - APC_SHM_SIZE=128M
-      - OPCACHE_MEM_SIZE=128
-      - CRON_PERIOD=15m
-      - TZ=Europe/Berlin
-      - ADMIN_USER=admin            # Don't set to configure through browser
-      - ADMIN_PASSWORD=admin        # Don't set to configure through browser
-      - DOMAIN=localhost
-      - DB_TYPE=mysql
-      - DB_NAME=nextcloud
-      - DB_USER=nextcloud
-      - DB_PASSWORD=supersecretpassword
-      - DB_HOST=nextcloud-db
-    volumes:
-      - /docker/nextcloud/data:/data
-      - /docker/nextcloud/config:/config
-      - /docker/nextcloud/apps:/apps2
-      - /docker/nextcloud/themes:/nextcloud/themes
-    networks:
-      - nextcloud_network
-
-  # If using MySQL
-  nextcloud-db:
-    image: mariadb:10
-    volumes:
-      - /docker/nextcloud/db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=supersecretpassword
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=supersecretpassword
-    networks:
-      - nextcloud_network
-
-  # If using Nextant
-  solr:
-    image: solr:6-alpine
-    container_name: solr
-    volumes:
-      - /docker/nextcloud/solr:/opt/solr/server/solr/mycores
-    entrypoint:
-      - docker-entrypoint.sh
-      - solr-precreate
-      - nextant
-    networks:
-      - nextcloud_network
-
-  # If using Redis
-  redis:
-    image: redis:alpine
-    container_name: redis
-    volumes:
-      - /docker/nextcloud/redis:/data
-    networks:
-      - nextcloud_network
-```
-
 You can update everything with `docker-compose pull` followed by `docker-compose up -d`.
 
 ## How to configure Redis
@@ -221,17 +147,12 @@ Redis can be used for distributed and file locking cache, alongside with APCu (l
    ),
 ```
 
-## How to configure Nextant
-
-You will have to deploy a Solr server, I've shown an example above with docker-compose. Once Nextant app is installed, go to "additional settings" in your admin pannel and use http://solr:8983/solr as "Adress of your Solr Servlet". There you go!
-
 ## Tip : how to use occ command
 
 There is a script for that, so you shouldn't bother to log into the container, set the right permissions, and so on. Just use `docker exec -ti nexcloud occ command`.
 
 ## Reverse proxy
 
-Of course you can use your own software! nginx, Haproxy, Caddy, h2o, Traefik...
-The latter is especially a good choice when using Docker. [Give it a try!](https://traefik.io/)
+Of course you can use your own software! nginx, Haproxy, Caddy, h2o, [Traefik](https://traefik.io/)...
 
 Whatever your choice is, you have to know that headers are already sent by the container, including HSTS, so there's no need to add them again. **It is strongly recommended (I'd like to say : MANDATORY) to use Nextcloud through an encrypted connection (HTTPS).** [Let's Encrypt](https://letsencrypt.org/) provides free SSL/TLS certificates, so you have no excuses.

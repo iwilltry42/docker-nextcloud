@@ -1,7 +1,5 @@
 # iwilltry42/nextcloud
 
-[![version](https://images.microbadger.com/badges/version/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own version badge on microbadger.com") [![image](https://images.microbadger.com/badges/image/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own image badge on microbadger.com")
-
 ## Thanks
 
 Thanks to [@wonderfall](https://github.com/wonderfall) who created the original project [wonderfall/docker-nextcloud](https://github.com/wonderfall/nextcloud).

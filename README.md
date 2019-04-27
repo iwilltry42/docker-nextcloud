@@ -1,11 +1,11 @@
 # iwilltry42/nextcloud
 
+[![version](https://images.microbadger.com/badges/version/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own version badge on microbadger.com") [![image](https://images.microbadger.com/badges/image/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own image badge on microbadger.com")
+
 ## Thanks
 
 Thanks to [@wonderfall](https://github.com/wonderfall) who created the original project [wonderfall/docker-nextcloud](https://github.com/wonderfall/nextcloud).
 I'm using the same `Dockerfile`, so you can choose to pull either from [wonderfall/nextcloud](https://hub.docker.com/r/wonderfall/nextcloud) or from [iwilltry42/nextcloud](https://hub.docker.com/r/iwilltry42/nextcloud).
-
-[![version](https://images.microbadger.com/badges/version/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own version badge on microbadger.com") [![image](https://images.microbadger.com/badges/image/iwilltry42/nextcloud.svg)](http://microbadger.com/images/iwilltry42/nextcloud "Get your own image badge on microbadger.com")
 
 **This image was made for my own use and I have no intention to make this official. Support won't be regular so if there's an update, or a fix, you can open a pull request. Any contribution is welcome, but please be aware I'm very busy currently. Before opening an issue, please check if there's already one related. Also please use Github instead of Docker Hub, otherwise I won't see your comments. Thanks.**
 

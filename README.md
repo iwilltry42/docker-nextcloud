@@ -8,7 +8,7 @@ I'm using the same `Dockerfile`, so you can choose to pull either from [wonderfa
 ## Features
 
 - Based on Alpine Linux.
-- Bundled with nginx and PHP 7.x (wonderfall/nginx-php image).
+- Bundled with nginx and PHP 7.x ([wonderfall/nginx-php](https://hub.docker.com/rwonderfall/nginx-php) image).
 - Automatic installation using environment variables.
 - Package integrity (SHA512) and authenticity (PGP) checked during building process.
 - Data and apps persistence.

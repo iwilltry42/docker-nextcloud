@@ -1,24 +1,65 @@
----
-version: '3'
-# This instance is using SQLite3 as database backend.
-# Please consider using a proper database like MariaDB or PostgreSQL
-# if you want to use this productive.
-
+version: "3.2"
+# This docker-compose setup uses Redis cache and a PostgreSQL database
+# NOTE: the volumes are mounted from a local directory /nextcloud
+# Make sure that you first check every setting before deploying
 services:
-  nextcloud:
-    image: iwilltry42/nextcloud
-    build:
-      context: .
-      dockerfile: Dockerfile.15.0
-    environment:
-      - UID=1000
-      - GID=1000
-      - ADMIN_USER=mrrobot
-      - ADMIN_PASSWORD=supercomplicatedpassword
-      - DB_TYPE=sqlite
+  redis:
+    container_name: nextcloud_redis
+    image: redis:5
+    restart: unless-stopped
     volumes:
-      - ./data:/data
-      - ./config:/config
-      - ./apps:/apps2
+      - /nextcloud/redis:/data
+    networks:
+      - nextcloud_network
+  db:
+    container_name: nextcloud_postgres
+    image: postgres:11
+    restart: unless-stopped
+    environment:
+      POSTGRES_USERNAME: nextcloud
+      POSTGRES_PASSWORD: nextcloud
+      POSTGRES_DB: nextcloud
+    volumes:
+      - /nextcloud/postgresql:/var/lib/postgresql/data
+    networks:
+      - nextcloud_network
+  nextcloud:
+    build: .
+    container_name: nextcloud
+    image: iwilltry42/nextcloud:16 # original: wonderfall/nextcloud:15
+    restart: unless-stopped
+    environment: 
+      TZ: Europe/Berlin
+      ADMIN_USER: admin
+      ADMIN_PASSWORD: "super-secure-password"
+      DOMAIN: nextcloud.my.domain
+      DB_TYPE: pgsql
+      DB_NAME: nextcloud
+      DB_USER: nextcloud
+      DB_PASSWORD: nextcloud
+      DB_HOST: db
+      APC_SHM_SIZE: 256M
+      OPCACHE_MEM_SIZE: 256M
+      MEMORY_LIMIT: 1024M
+    volumes:
+      - /nextcloud/config:/config
+      - /nextcloud/apps2:/apps2
+      - /nextcloud/themes:/nextcloud/themes
+      - /nextcloud/php-session:/php/session
+      - /nextcloud:/data
     ports:
-      - 8888:8888
+      # - "HOST:CONTAINER"
+      - "8080:8888"
+    links:
+      # - SERVICE[:ALIAS]
+      - db
+      - redis
+    depends_on:
+      - db
+      - redis
+    networks:
+      - nextcloud_network
+
+networks:
+  nextcloud_network:
+    external: false

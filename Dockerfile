@@ -1,7 +1,7 @@
 FROM iwilltry42/nginx-php:7.2
 
 # https://download.nextcloud.com/server/releases/
-ARG NEXTCLOUD_VERSION=16.0.5
+ARG NEXTCLOUD_VERSION=17.0.0
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ENV UID=991 GID=991 \

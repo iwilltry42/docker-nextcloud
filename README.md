@@ -23,7 +23,6 @@ I'm using the same `Dockerfile`, so you can choose to pull either from [wonderfa
 ## Build-time variables
 
 - **NEXTCLOUD_VERSION** : version of nextcloud
-- **GNU_LIBICONV_VERSION** : version of GNU Libiconv
 - **GPG_nextcloud** : signing key fingerprint
 
 ## Environment variables
@@ -99,7 +98,7 @@ docker run -d --name nextcloud \
        -e DB_USER=nextcloud \
        -e DB_PASSWORD=supersecretpassword \
        -e DB_HOST=db_nextcloud \
-       iwilltry42/nextcloud:16
+       iwilltry42/nextcloud:18.0.3
 ```
 
 You are **not obliged** to use `ADMIN_USER` and `ADMIN_PASSWORD`. If these variables are not provided, you'll be able to configure your admin acccount from your browser.

@@ -13,6 +13,7 @@ instanceid=oc$(openssl rand -hex 6 | head -c 10)
 cat > $CONFIGFILE <<EOF;
 <?php
 \$CONFIG = array (
+  'overwriteprotocol' => 'https',
   'datadirectory' => '/data',
 
   "apps_paths" => array (

@@ -1,6 +1,6 @@
-FROM iwilltry42/nginx-php:1.17.9-7.3.15
+FROM iwilltry42/nginx-php:1.18.0-7.4.7
 
-ARG NEXTCLOUD_VERSION=18.0.4
+ARG NEXTCLOUD_VERSION=19.0.0
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ENV UID=991 GID=991 \
@@ -8,7 +8,7 @@ ENV UID=991 GID=991 \
     APC_SHM_SIZE=128M \
     OPCACHE_MEM_SIZE=128 \
     MEMORY_LIMIT=512M \
-    CRON_PERIOD=15m \
+    CRON_PERIOD=5m \
     CRON_MEMORY_LIMIT=1g \
     TZ=Etc/UTC \
     DB_TYPE=sqlite3 \
@@ -31,6 +31,7 @@ RUN apk -U upgrade \
     libsmbclient \
     tzdata \
     imagemagick \
+    ffmpeg \
  && pecl install \
     smbclient \
     apcu \

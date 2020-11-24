@@ -20,6 +20,14 @@ I'm using the same `Dockerfile`, so you can choose to pull either from [wonderfa
 - No root processes. Never.
 - Environment variables provided (see below).
 
+### Tags
+
+- **latest** : latest stable version.
+- **20.0** : latest 20.0.x version (stable, recommended)
+- **19.0** : latest 19.0.x version (old stable)
+
+Since this project should suit my needs, I'll only maintain the latest stable version available.
+
 ## Build-time variables
 
 - **NEXTCLOUD_VERSION** : version of nextcloud

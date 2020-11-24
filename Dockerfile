@@ -1,5 +1,7 @@
+# https://hub.docker.com/r/iwilltry42/nginx-php/tags
 FROM iwilltry42/nginx-php:1.19.4-7.4.12
 
+# https://github.com/nextcloud/server/releases
 ARG NEXTCLOUD_VERSION=20.0.2
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 

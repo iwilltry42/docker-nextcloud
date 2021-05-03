@@ -1,8 +1,8 @@
 # https://hub.docker.com/r/iwilltry42/nginx-php/tags
-FROM iwilltry42/nginx-php:1.19.4-7.4.12
+FROM iwilltry42/nginx-php:1.20.0-8.0.5
 
 # https://github.com/nextcloud/server/releases
-ARG NEXTCLOUD_VERSION=20.0.2
+ARG NEXTCLOUD_VERSION=21.0.1
 ARG GPG_nextcloud="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 
 ENV UID=991 GID=991 \
